@@ -1,0 +1,20 @@
+---
+- hosts: all
+  gather_facts: yes
+
+  tasks:
+
+- hosts: master
+  roles:
+    - grafana
+
+- hosts: clients
+  roles:
+    - prometheus
+    - node_exporter
+
+- hosts: master
+  roles:
+    - node_exporter
+
+ 

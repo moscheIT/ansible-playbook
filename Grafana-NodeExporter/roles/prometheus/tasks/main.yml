@@ -1,9 +1,16 @@
 
-- name: Download Prometheus
+- name: Download Prometheus arm7
   get_url:
-    url: https://github.com/prometheus/prometheus/releases/download/v2.19.1/prometheus-2.19.1.linux-armv7.tar.gz
-    dest: /tmp
-    checksum: sha256:6e0777b03d3fd2cba8ce0be6adf75154e21062c886cc788d91591b4ea72d3cc3
+    url: https://github.com/prometheus/prometheus/releases/download/v2.20.1/prometheus-2.20.1.linux-armv7.tar.gz
+    dest: /tmp/prometheus.tar.gz
+  when: ansible_facts['architecture'] == "armv7l"
+
+- name: Download Prometheus arm64
+  get_url:
+    url: https://github.com/prometheus/prometheus/releases/download/v2.20.1/prometheus-2.20.1.linux-arm64.tar.gz
+    dest: /tmp/prometheus.tar.gz
+  when: ansible_facts['architecture'] == "aarch64"
+
 
 - name: Create Prometheus folder in opt
   become: yes
@@ -15,7 +22,7 @@
 - name: Extract Prometheus
   become: yes
   unarchive:
-     src: /tmp/prometheus-2.19.1.linux-armv7.tar.gz
+     src: /tmp/prometheus.tar.gz
      dest: /usr/bin/prometheus
      remote_src: yes
 
@@ -28,7 +35,7 @@
 - name: Create Prometheus data folder in opt
   become: yes
   file:
-    path: /usr/bin/prometheus/prometheus-2.19.1.linux-armv7/data
+    path: /usr/bin/prometheus/prometheus/data
     state: directory
     mode: '0777'
 
@@ -47,9 +54,9 @@
         User=ubuntu
         Restart=on-failure
 
-        ExecStart=/usr/bin/prometheus/prometheus-2.19.1.linux-armv7/prometheus \
-        --config.file=/usr/bin/prometheus/prometheus-2.19.1.linux-armv7/prometheus.yml \
-        --storage.tsdb.path=/usr/bin/prometheus/prometheus-2.19.1.linux-armv7/data
+        ExecStart=/usr/bin/prometheus/prometheus/prometheus \
+        --config.file=/usr/bin/prometheus/prometheus/prometheus.yml \
+        --storage.tsdb.path=/usr/bin/prometheus/prometheus/data
 
         [Install]
         WantedBy=multi-user.target

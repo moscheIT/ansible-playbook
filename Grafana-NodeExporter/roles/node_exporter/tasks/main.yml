@@ -25,6 +25,10 @@
      dest: /usr/bin/nodeexporter
      remote_src: yes
 
+- name: Standarizing name
+  become: yes
+  shell: mv /usr/bin/nodeexporter/node_exporter-* /usr/bin/nodeexporter/node_exporter
+
 - name: Create Node exporter Service File
   become: yes
   file:
@@ -41,7 +45,7 @@
         Description=Node Exporter
         Documentation=https://prometheus.io/
         After=network-online.target
-
+        Type=oneshot
         [Service]
         User=ubuntu
         Restart=on-failure

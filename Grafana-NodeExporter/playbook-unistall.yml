@@ -1,0 +1,20 @@
+---
+- hosts: all
+  gather_facts: yes
+
+  tasks:
+
+- hosts: master
+  roles:
+    - grafana-unistall
+
+- hosts: clients
+  roles:
+    - prometheus-unistall
+    - node_exporter-unistall
+
+- hosts: master
+  roles:
+    - node_exporter-unistall
+
+ 

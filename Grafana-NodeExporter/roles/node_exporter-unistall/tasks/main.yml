@@ -1,0 +1,25 @@
+- name: Stop Node exporter service
+  become: yes
+  service:
+    name: nodeexporter
+    enabled: no
+    state: stopped
+
+
+- name: Create Node exporter folder in opt
+  become: yes
+  file:
+    path: /usr/bin/nodeexporter
+    state: absent
+
+- name: Remove Node exporter Service File
+  become: yes
+  file:
+      path: /etc/systemd/system/nodeexporter.service
+      state: absent
+
+- name: systemd reload
+  become: yes
+  systemd:
+    daemon_reload: yes
+

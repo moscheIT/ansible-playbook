@@ -43,7 +43,7 @@ echo
 
 if [ ! -d /home/ansible/.ssh ]; then
   echo -n $"Install rsa public key for ansible:"
-  curl -s $IPMASER -o /tmp/id_rsa.pub
+  curl -s $IPMASTER -o /tmp/id_rsa.pub
   mkdir /home/ansible/.ssh
   chmod 700 /home/ansible/.ssh
   cp /tmp/id_rsa.pub /home/ansible/.ssh/authorized_keys
